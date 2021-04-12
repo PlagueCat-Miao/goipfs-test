@@ -10,6 +10,7 @@ type Strategy interface {
 	AddNode(node Node)
 	AddFile(file filesys.TestFile)
 	FailReport(num int) (successRate float64)
+	PrintNodesUse ()(nodesUse []int64)
 }
 
 //Kademlia
@@ -59,3 +60,12 @@ func (b *Base) FailReport(num int) (successRate float64) {
 
 	return
 }
+
+func (b *Base) PrintNodesUse() []int64 {
+	var nodesUse []int64
+	for _,node:=range b.NodeList{
+		nodesUse =append(nodesUse,(node.Capacity- node.Remain)/100)
+	}
+	return nodesUse
+}
+
