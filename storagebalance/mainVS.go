@@ -16,7 +16,7 @@ const file_nodes = 100
 
 const redundant = 5
 const space = 45 * 1024 //30*1024 有奇效
-const test_file_set ="B"
+const test_file_set = "B"
 const is_generate_init = false
 
 func InitNodes(strategies map[string]strategy.Strategy) {
@@ -40,7 +40,7 @@ func InitNodes(strategies map[string]strategy.Strategy) {
 }
 
 func main() {
-	if is_generate_init ==true{
+	if is_generate_init == true {
 		filesys.GenerateFileInfo(file_nodes)
 	}
 	kad := strategy.NewKademlia(redundant)
@@ -59,9 +59,9 @@ func main() {
 	sum := int64(0)
 	for i, file := range files {
 		fmt.Printf("progress : %+v %%\r", 100*i/n)
-		if test_file_set =="A"  {
+		if test_file_set == "A" {
 			file.Size = filesys.UnifySize
-		}else if test_file_set =="C"{
+		} else if test_file_set == "C" {
 			No := i % 4
 			switch No {
 			case 0:
@@ -77,7 +77,7 @@ func main() {
 				file.Size = filesys.R_unifySize
 				break
 			}
-		}//data B team is read FileInfo
+		} //data B team is read FileInfo
 		sum += file.Size * redundant
 		for _, op := range opStrategy {
 			op.AddFile(file)
@@ -86,7 +86,7 @@ func main() {
 
 	fmt.Printf("\n\nprint report:\n")
 	fmt.Printf("数据可用性: %+vMB\n", sum)
-	strategyHeat :=make(map[string][]int64)
+	strategyHeat := make(map[string][]int64)
 	for name, op := range opStrategy {
 		remSD, rem, use, maxRem := op.PerformanceEvaluation()
 		strategyHeat[name] = op.PrintNodesUse()
@@ -96,9 +96,9 @@ func main() {
 	showHeatMap(strategyHeat)
 }
 
-func showHeatMap(strategyHeat map[string][]int64){
-    e := show.HeatmapExamples{}
-    e.Experiments(strategyHeat)
+func showHeatMap(strategyHeat map[string][]int64) {
+	e := show.HeatmapExamples{}
+	e.Experiments(strategyHeat)
 
 	fs := http.FileServer(http.Dir("show/html"))
 	log.Println("running server at http://localhost:8848")

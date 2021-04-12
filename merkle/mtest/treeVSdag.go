@@ -17,18 +17,22 @@ const block_byte_size = int64(256 * 1024)
 const sha256Ans_size = 32
 const Mulithash_size = 47
 
-const XuChang_Bayi_Road = "E:\\lab511-ipfs实验\\八一路与劳动路口反卡北侧\\"
-const XuChang_Huatuo_Road = "E:\\lab511-ipfs实验\\华佗路与五一路口反卡东侧\\"
-const XuChang_TiBao_Road = "E:\\lab511-ipfs实验\\天宝路与文峰路口反卡北侧\\"
+//const XuChang_Bayi_Road = "E:\\lab511-ipfs实验\\八一路与劳动路口反卡北侧\\"
+//const XuChang_Huatuo_Road = "E:\\lab511-ipfs实验\\华佗路与五一路口反卡东侧\\"
+//const XuChang_TiBao_Road = "E:\\lab511-ipfs实验\\天宝路与文峰路口反卡北侧\\"
+
+const XuChang_Bayi_Road = "/home/hellcat/plague/data-play/lab511-vidoe-test/八一路与劳动路口反卡北侧/"
+const XuChang_Huatuo_Road = "/home/hellcat/plague/data-play/lab511-vidoe-test/华佗路与五一路口反卡东侧/"
+const XuChang_TiBao_Road = "/home/hellcat/plague/data-play/lab511-vidoe-test/天宝路与文峰路口反卡北侧/"
 
 var pathMap = map[string][]string{
-	"A组":   {XuChang_Bayi_Road},
-	"B组":   {XuChang_Huatuo_Road},
-	"C组":   {XuChang_TiBao_Road},
+	"A组": {XuChang_Bayi_Road},
+	"B组": {XuChang_Huatuo_Road},
+	"C组": {XuChang_TiBao_Road},
 
-	"A+B组":  {XuChang_Bayi_Road, XuChang_Huatuo_Road},
-	"B+C组":  {XuChang_Huatuo_Road, XuChang_TiBao_Road},
-	"A+C组":  {XuChang_Bayi_Road, XuChang_TiBao_Road},
+	"A+B组": {XuChang_Bayi_Road, XuChang_Huatuo_Road},
+	"B+C组": {XuChang_Huatuo_Road, XuChang_TiBao_Road},
+	"A+C组": {XuChang_Bayi_Road, XuChang_TiBao_Road},
 
 	"A+B+C组": {XuChang_Bayi_Road, XuChang_Huatuo_Road, XuChang_TiBao_Road},
 }
@@ -45,7 +49,7 @@ var TreeTimeList []time.Duration
 var dagMap map[string]bool
 var reuse int64
 
-func InitTest(){
+func InitTest() {
 	testBlock = []byte("asdfghhklqpwoeirutyvbxnz,zxcnm")
 	merkleTreeByte = 0
 	merkleDagByte = 0
@@ -63,9 +67,9 @@ func TestSpeedAndSpace(label string) (int64, int64, int64, int64, int64, error) 
 
 	//处理
 	for i, path := range pathMap[label] {
-		err := AddDirByFile(path,processBlock, i, len(pathMap[label]))
+		err := AddDirByFile(path, processBlock, i, len(pathMap[label]))
 		if err != nil {
-			return -1, -1, -1, -1, -1, fmt.Errorf("testSpeedandSpace Err:%v, Path:%v, label:%v", err,path, label)
+			return -1, -1, -1, -1, -1, fmt.Errorf("testSpeedandSpace Err:%v, Path:%v, label:%v", err, path, label)
 		}
 	}
 
@@ -78,7 +82,7 @@ func TestSpeedAndSpace(label string) (int64, int64, int64, int64, int64, error) 
 }
 
 //处理文件夹
-func AddDirByFile(pathname string, hookfn func([]byte),listNum, listLen int,) error {
+func AddDirByFile(pathname string, hookfn func([]byte), listNum, listLen int) error {
 	rd, err := ioutil.ReadDir(pathname)
 	if err != nil {
 		return fmt.Errorf("ReadDir err:%v,pathname:%v", err, pathname)

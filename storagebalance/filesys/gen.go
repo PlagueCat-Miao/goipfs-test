@@ -28,7 +28,7 @@ func GenerateFileInfo(num int) error {
 	var FilesInfo []TestFile
 	bigfilenum := 0
 	leftTreenum := 0
-	size :=int64(0)
+	size := int64(0)
 	for i := 0; i < num; i++ {
 		var newID [20]byte
 		for j := 0; j < ID_max_byte; j++ {
@@ -40,7 +40,7 @@ func GenerateFileInfo(num int) error {
 		}
 		up := rand.Intn(160)
 		newSize := (int64)(argeSize + up) //800 +-80
-		size +=newSize
+		size += newSize
 		if up >= 80 {
 			bigfilenum++
 		}
@@ -52,7 +52,7 @@ func GenerateFileInfo(num int) error {
 	}
 	fmt.Printf("seed-%v report:\v", seed)
 	fmt.Printf("filenum: %v bigfilenum : %v %% leftTreenum: %v %%", num, 100*bigfilenum/num, 100*leftTreenum/num)
-	fmt.Printf("size: %v ",size)
+	fmt.Printf("size: %v ", size)
 
 	return nil
 }

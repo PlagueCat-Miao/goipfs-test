@@ -11,15 +11,13 @@ import (
 )
 
 var (
-
-	NodeColumn =[...]string{" ", " ", " ", " ", " "}
+	NodeColumn = [...]string{" ", " ", " ", " ", " "}
 
 	NodeRow = [...]string{
 		"5", "10", "15", "20", "25", "30", "35", "40", "45", "50",
-		"55","60", "65", "70", "75", "80", "85", "90", "95","100",
+		"55", "60", "65", "70", "75", "80", "85", "90", "95", "100",
 	}
 )
-
 
 func genHeatMapData(nodesRem []int64) []opts.HeatMapData {
 	items := make([]opts.HeatMapData, 0)
@@ -30,18 +28,18 @@ func genHeatMapData(nodesRem []int64) []opts.HeatMapData {
 	})
 
 	for i := 0; i < n; i++ {
-		column := i%columnLen
-		row := i/columnLen
-		if nodesRem[i] == 0{
-			items = append(items, opts.HeatMapData{Value: [3]interface{}{row,column, "-"}})
-		}else{
-			items = append(items, opts.HeatMapData{Value: [3]interface{}{row,column,nodesRem[i]}})
+		column := i % columnLen
+		row := i / columnLen
+		if nodesRem[i] == 0 {
+			items = append(items, opts.HeatMapData{Value: [3]interface{}{row, column, "-"}})
+		} else {
+			items = append(items, opts.HeatMapData{Value: [3]interface{}{row, column, nodesRem[i]}})
 		}
 	}
 	return items
 }
 
-func heatMapBase(Title string ,nodesUse []int64) *charts.HeatMap {
+func heatMapBase(Title string, nodesUse []int64) *charts.HeatMap {
 	hm := charts.NewHeatMap()
 	hm.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
@@ -49,14 +47,14 @@ func heatMapBase(Title string ,nodesUse []int64) *charts.HeatMap {
 		}),
 		charts.WithXAxisOpts(opts.XAxis{
 			Type:      "category",
-			Data: NodeRow,
+			Data:      NodeRow,
 			SplitArea: &opts.SplitArea{Show: true},
 			//AxisLabel: &opts.AxisLabel{Show: true, Formatter: "{value}"},
 		}),
 		charts.WithYAxisOpts(opts.YAxis{
-			Type:        "category",
-			Data:        NodeColumn,
-			SplitArea:   &opts.SplitArea{Show: true},
+			Type:      "category",
+			Data:      NodeColumn,
+			SplitArea: &opts.SplitArea{Show: true},
 			//AxisLabel: &opts.AxisLabel{Show: true, Formatter: "{value}"},
 		}),
 
@@ -101,8 +99,8 @@ type HeatmapExamples struct{}
 func (HeatmapExamples) Experiments(StrategyHeat map[string][]int64) {
 	page := components.NewPage()
 	var Charters []components.Charter
-	for title , nodesUse :=range StrategyHeat{
-		Charters =append(Charters, heatMapBase(title,nodesUse))
+	for title, nodesUse := range StrategyHeat {
+		Charters = append(Charters, heatMapBase(title, nodesUse))
 	}
 	page.AddCharts(Charters...)
 
