@@ -16,8 +16,10 @@ const file_nodes = 100
 
 const redundant = 5
 const space = 45 * 1024 //30*1024 有奇效
-const test_file_set = "B"
+const test_file_set = "C"
 const is_generate_init = false
+
+var strategySequence = []string{"asce", "kad", "mrss", "randm"}
 
 func InitNodes(strategies map[string]strategy.Strategy) {
 
@@ -84,22 +86,26 @@ func main() {
 		}
 	}
 
-	fmt.Printf("\n\nprint report:\n")
+	fmt.Printf("\n\nSet %s print report:\n", test_file_set)
 	fmt.Printf("数据可用性: %+vMB\n", sum)
 	strategyHeat := make(map[string][]int64)
-	for name, op := range opStrategy {
-		remSD, rem, use, maxRem := op.PerformanceEvaluation()
-		strategyHeat[name] = op.PrintNodesUse()
-		fmt.Printf("%5v - 负载标准差: %.4f remain: %+vMB use: %+vMB\n", name, remSD, rem, use)
-		fmt.Printf("        最大节点剩余空间:%v 失败率: %+.4f\n", maxRem, op.FailReport(n))
+	for _, stgName := range strategySequence {
+		if op, ok := opStrategy[stgName]; ok {
+			remSD, rem, use, maxRem := op.PerformanceEvaluation()
+			strategyHeat[fmt.Sprintf("%s  (𝜎: %.4f )",stgName,remSD)] = op.PrintNodesUse()
+			fmt.Printf("%5v - 负载标准差: %.4f remain: %+vMB use: %+vMB\n", stgName, remSD, rem, use)
+			fmt.Printf("        最大节点剩余空间:%v 失败率: %+.4f\n", maxRem, op.FailReport(n))
+		} else {
+			fmt.Printf("%5v - 未找到\n", stgName)
+		}
 	}
 	showHeatMap(strategyHeat)
 }
 
 func showHeatMap(strategyHeat map[string][]int64) {
 	e := show.HeatmapExamples{}
-	e.Experiments(strategyHeat,test_file_set)
-	
+	e.Experiments(strategyHeat, test_file_set)
+
 	fs := http.FileServer(http.Dir("show/html"))
 	log.Println("running server at http://localhost:8848")
 	log.Fatal(http.ListenAndServe("localhost:8848", logRequest(fs)))

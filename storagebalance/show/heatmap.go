@@ -60,15 +60,16 @@ func heatMapBase(Title string, nodesUse []int64) *charts.HeatMap {
 
 		charts.WithVisualMapOpts(opts.VisualMap{
 			Calculable: true,
-			Min:        200,
-			Max:        550,
+			Min:        20000,
+			Max:        55000,
 			InRange: &opts.VisualMapInRange{
 				Color: []string{"#eac736", "#ff0000"},
 			},
+			Text : []string{"remain(MB)" ,"low"},
 		}),
 		charts.WithInitializationOpts(opts.Initialization{
-			Width:  "1080px",
-			Height: "360px",
+			Width:  "1040px",
+			Height: "350px",
 		}),
 		charts.WithToolboxOpts(opts.Toolbox{
 			Show:  true,
