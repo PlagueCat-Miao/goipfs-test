@@ -96,7 +96,7 @@ func heatMapBase(Title string, nodesUse []int64) *charts.HeatMap {
 
 type HeatmapExamples struct{}
 
-func (HeatmapExamples) Experiments(StrategyHeat map[string][]int64) {
+func (HeatmapExamples) Experiments(StrategyHeat map[string][]int64,testFileSet string) {
 	page := components.NewPage()
 	var Charters []components.Charter
 	for title, nodesUse := range StrategyHeat {
@@ -104,7 +104,7 @@ func (HeatmapExamples) Experiments(StrategyHeat map[string][]int64) {
 	}
 	page.AddCharts(Charters...)
 
-	f, err := os.Create("show/html/heatmap.html")
+	f, err := os.Create("show/html/heatmap_"+testFileSet+".html")
 	if err != nil {
 		panic(err)
 	}

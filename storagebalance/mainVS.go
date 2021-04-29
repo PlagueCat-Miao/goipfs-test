@@ -98,8 +98,8 @@ func main() {
 
 func showHeatMap(strategyHeat map[string][]int64) {
 	e := show.HeatmapExamples{}
-	e.Experiments(strategyHeat)
-
+	e.Experiments(strategyHeat,test_file_set)
+	
 	fs := http.FileServer(http.Dir("show/html"))
 	log.Println("running server at http://localhost:8848")
 	log.Fatal(http.ListenAndServe("localhost:8848", logRequest(fs)))
